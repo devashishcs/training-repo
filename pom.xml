@@ -30,15 +30,19 @@
     <version>${mule.maven.plugin.version}</version>
     <extensions>true</extensions>
     <configuration>
-        <cloudHubDeployment>
-            <uri>https://anypoint.mulesoft.com</uri>
-            <username>${anypoint.username}</username>
-            <password>${anypoint.password}</password>
-            <applicationName>test-project</applicationName>
-            <environment>Design</environment>
-            <region>us-east-1</region>
-            <muleVersion>${app.runtime}</muleVersion>
-        </cloudHubDeployment>
+    <cloudHub2Deployment>
+    <uri>https://anypoint.mulesoft.com</uri>
+    <provider>MC</provider>
+    <target>Cloudhub-US-East-2</target>
+    <environment>Design</environment>
+    <connectedAppClientId>${anypoint.client.id}</connectedAppClientId>
+    <connectedAppClientSecret>${anypoint.client.secret}</connectedAppClientSecret>
+    <connectedAppGrantType>client_credentials</connectedAppGrantType>
+    <applicationName>test-project</applicationName>
+    <muleVersion>${app.runtime}</muleVersion>
+    <replicas>1</replicas>
+    <vCores>0.1</vCores>
+</cloudHub2Deployment>
     </configuration>
 </plugin>
 		</plugins>

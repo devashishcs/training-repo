@@ -5,11 +5,11 @@ pipeline {
         maven 'Maven3'   // must match the name configured in Jenkins Global Tool Configuration
         jdk 'JDK17'      // must match the name configured in Jenkins Global Tool Configuration
     }
-
-    environment {
-        ANYPOINT_USERNAME = credentials('anypoint-username')
-        ANYPOINT_PASSWORD = credentials('anypoint-password')
-    }
+	environment {
+    ANYPOINT_CLIENT_ID = credentials('anypoint-client-id')
+    ANYPOINT_CLIENT_SECRET = credentials('anypoint-client-secret')
+}
+    
 
     stages {
         stage('Checkout') {
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn deploy -DmuleDeploy -Danypoint.username=$ANYPOINT_USERNAME -Danypoint.password=$ANYPOINT_PASSWORD'
+                sh 'mvn deploy -DmuleDeploy -Danypoint.client.id=$ANYPOINT_CLIENT_ID -Danypoint.client.secret=$ANYPOINT_CLIENT_SECRET'
             }
         }
 
