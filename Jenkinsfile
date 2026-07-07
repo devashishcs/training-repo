@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven3'   // must match the name configured in Jenkins Global Tool Configuration
-        jdk 'JDK17'      // must match the name configured in Jenkins Global Tool Configuration
+        maven 'Maven3'
+        jdk 'JDK17'
     }
-	environment {
-    ANYPOINT_CLIENT_ID = credentials('anypoint-client-id')
-    ANYPOINT_CLIENT_SECRET = credentials('anypoint-client-secret')
-}
-    
+
+    environment {
+        ANYPOINT_CLIENT_ID = credentials('anypoint-client-id')
+        ANYPOINT_CLIENT_SECRET = credentials('anypoint-client-secret')
+    }
 
     stages {
         stage('Checkout') {
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn deploy -DmuleDeploy -Danypoint.client.id=$ANYPOINT_CLIENT_ID -Danypoint.client.secret=$ANYPOINT_CLIENT_SECRET'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
@@ -34,7 +34,20 @@ pipeline {
 
         stage('Deploy to CloudHub') {
             steps {
-                sh 'mvn deploy -DmuleDeploy'
+                sh '''
+                cat > jenkins-settings.xml << EOF
+<settings>
+    <servers>
+        <server>
+            <id>anypoint-exchange-v3</id>
+            <username>~~~Client~~~</username>
+            <password>${ANYPOINT_CLIENT_ID}~?~${ANYPOINT_CLIENT_SECRET}</password>
+        </server>
+    </servers>
+</settings>
+EOF
+                mvn deploy -DmuleDeploy -s jenkins-settings.xml -Danypoint.client.id=$ANYPOINT_CLIENT_ID -Danypoint.client.secret=$ANYPOINT_CLIENT_SECRET
+                '''
             }
         }
     }
@@ -45,6 +58,9 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed — check logs above.'
+        }
+        always {
+            sh 'rm -f jenkins-settings.xml'
         }
     }
 }

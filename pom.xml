@@ -42,6 +42,7 @@
     <muleVersion>${app.runtime}</muleVersion>
     <replicas>1</replicas>
     <vCores>0.1</vCores>
+    <server>anypoint-exchange-v3</server>
 </cloudhub2Deployment>
     </configuration>
 </plugin>
