@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout this repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Cache dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -33,7 +33,7 @@ jobs:
         artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
         mv $artifactName1 $artifactName2
     - name: Upload artifact 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: artifacts
           path: target/*.jar
@@ -43,24 +43,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:    
     - name: Checkout this repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Cache dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: artifacts
     - name: Deploy to Sandbox
       env:
-        USERNAME: ${{ secrets.anypoint_platform_username }}
-        PASSWORD: ${{ secrets.anypoint_platform_password }}
+        CLIENT_ID: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
          -Dmule.artifact=$artifactName \
-         -Danypoint.username="$USERNAME" \
-         -Danypoint.password="$PASSWORD" 
+         -Danypoint.clientid="$CLIENT_ID" \
+         -Danypoint.clientsecret="$CLIENT_SECRET" 
