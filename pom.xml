@@ -25,11 +25,22 @@
 				<version>3.2.0</version>
 			</plugin>
 			<plugin>
-				<groupId>org.mule.tools.maven</groupId>
-				<artifactId>mule-maven-plugin</artifactId>
-				<version>${mule.maven.plugin.version}</version>
-				<extensions>true</extensions>
-			</plugin>
+    <groupId>org.mule.tools.maven</groupId>
+    <artifactId>mule-maven-plugin</artifactId>
+    <version>${mule.maven.plugin.version}</version>
+    <extensions>true</extensions>
+    <configuration>
+        <cloudHubDeployment>
+            <uri>https://anypoint.mulesoft.com</uri>
+            <username>${anypoint.username}</username>
+            <password>${anypoint.password}</password>
+            <applicationName>test-project</applicationName>
+            <environment>Design</environment>
+            <region>us-east-1</region>
+            <muleVersion>${app.runtime}</muleVersion>
+        </cloudHubDeployment>
+    </configuration>
+</plugin>
 		</plugins>
 	</build>
 
