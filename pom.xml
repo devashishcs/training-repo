@@ -34,7 +34,7 @@
     <uri>https://anypoint.mulesoft.com</uri>
     <provider>MC</provider>
     <target>Cloudhub-US-East-2</target>
-    <environment>Design</environment>
+    <environment>Sandbox</environment>
     <connectedAppClientId>${anypoint.client.id}</connectedAppClientId>
     <connectedAppClientSecret>${anypoint.client.secret}</connectedAppClientSecret>
     <connectedAppGrantType>client_credentials</connectedAppGrantType>
