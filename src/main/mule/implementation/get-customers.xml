@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="get-customers" doc:id="2bc1171a-b7fa-48cf-9191-5fe4b30b31e7" >
+		<ee:transform doc:name="Preapre Request" doc:id="d91f1263-064f-4720-a58c-38261468332b" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="flowName" ><![CDATA["query-flow"]]></ee:set-variable>
+				<ee:set-variable variableName="query" ><![CDATA["SELECT Id FROM Account LIMIT 10"]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-request-connector-retry-flow" doc:id="65aa9760-3292-4ece-80ab-70dad97860db" name="salesforce-request-connector-retry-flow"/>
+		<ee:transform doc:name="Submit Response" doc:id="0f15db36-abca-4123-93f4-e23f6b13b17c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	requestPayload: vars.query,
+	responsePayload:payload
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="get-customers-by-id" doc:id="3692d393-c3dc-419c-8703-345232253662" >
+		<ee:transform doc:name="Prepare Request" doc:id="61364cd6-e2b4-44d7-a579-924da8ae9970" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="flowName" ><![CDATA["query-flow"]]></ee:set-variable>
+				<ee:set-variable variableName="query" ><![CDATA["SELECT FIELDS(ALL) FROM Account WHERE Id = '" ++ vars.customerId ++ "'"]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-request-connector-retry-flow " doc:id="2db9bd45-a681-4e15-b6ba-04f3dd555fce" name="salesforce-request-connector-retry-flow"/>
+		<ee:transform doc:name="Submit Response" doc:id="ba7e74ab-f558-4984-8870-bb5ece4bbcf3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

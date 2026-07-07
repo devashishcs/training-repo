@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="post-customers" doc:id="8238467a-6016-4684-a9cd-49f7d17a2569" >
+		<ee:transform doc:name="Prepare Request" doc:id="5b7e9e85-48ad-45e0-a17d-e88ada1e9a72" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[{
+	Name: payload.firstName ++ " " ++ payload.lastName,
+	Email__c: payload.email
+}]]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="sObject" ><![CDATA["Account"]]></ee:set-variable>
+				<ee:set-variable variableName="flowName" ><![CDATA["create-flow"]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-request-connector-retry-flow " doc:id="5df01fa7-1c48-41c9-a2cb-9a17f9df9aab" name="salesforce-request-connector-retry-flow"/>
+		<ee:transform doc:name="Submit Response" doc:id="f9acd435-17a3-420a-aa72-3665cab3c949" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

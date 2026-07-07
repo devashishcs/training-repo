@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="ce559d9e-1347-4df4-8679-e80e8bf3fa0d" >
+		<salesforce:oauth-client-credentials-connection >
+			<salesforce:oauth-client-credentials clientId="3MVG9pRzvMkjMb6lDRGjYQbOG0YbyUTKYntvUzBji_jmp4FycD.nZpxWa8mer6s2QUfYvV47nB1cfyH55Drqd" clientSecret="199DE83B0485BBD234A5511ECB60AD3BC469D46E162F9AA242812A755EA3D232" tokenUrl="https://d5j00000bc5xgear-dev-ed.develop.my.salesforce.com/services/oauth2/token" />
+		</salesforce:oauth-client-credentials-connection>
+	</salesforce:sfdc-config>
+	<sub-flow name="salesforce-request-connector-retry-flow" doc:id="52b9e626-8739-4176-b208-59c9fe6b879e" >
+		<until-successful maxRetries="2" doc:name="Until Successful" doc:id="3015881a-cb3e-4089-a037-2c5100b2546f" millisBetweenRetries="10000">
+			<try doc:name="Try" doc:id="6df0fe67-f3f6-47bb-a5fc-6f61cec897a2" >
+				<flow-ref doc:name="Flow Reference" doc:id="b3f4418a-7d5e-4182-88cb-a33e48970c55" name="#[vars.flowName]"/>
+			</try>
+		</until-successful>
+	</sub-flow>
+	<sub-flow name="query-flow" doc:id="63b2b46b-a103-44f3-862d-4848467dd4e2" >
+		<salesforce:query doc:name="Query" doc:id="574046f6-7767-45ad-a6e9-cfc304383d0a" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[#[vars.query]]]></salesforce:salesforce-query>
+			<salesforce:parameters ><![CDATA[#[vars.params]]]></salesforce:parameters>
+		</salesforce:query>
+	</sub-flow>
+	<sub-flow name="create-flow" doc:id="1ff4e16a-a22c-48af-b219-4b9bb6c6594d" >
+		<salesforce:create doc:name="Create" doc:id="9976a1e3-a7e0-43cd-8a00-d767d39dc68e" config-ref="Salesforce_Config" type="#[vars.sObject]"/>
+	</sub-flow>
+</mule>
