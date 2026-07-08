@@ -45,4 +45,9 @@ jobs:
           ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET }}
           ANYPOINT_ENV: ${{ secrets.ANYPOINT_ENV }}
           ANYPOINT_TARGET: ${{ secrets.ANYPOINT_TARGET }}
-        run: mvn -B -s settings.xml deploy -DmuleDeploy -DskipTests
+        run: |
+          mvn -B -s settings.xml deploy -DmuleDeploy -DskipTests \
+            -Danypoint.environment=${ANYPOINT_ENV} \
+            -Danypoint.target=${ANYPOINT_TARGET} \
+            -Danypoint.client_id=${ANYPOINT_CLIENT_ID} \
+            -Danypoint.client_secret=${ANYPOINT_CLIENT_SECRET}

@@ -31,17 +31,17 @@
 				<extensions>true</extensions>
 				<configuration>
 					<cloudHubV2Deployment>
-						<uri>https://anypoint.mulesoft.com</uri>
-						<provider>MC</provider>
-						<environment>${env.ANYPOINT_ENV}</environment>
-						<target>${env.ANYPOINT_TARGET}</target>
-						<muleVersion>${app.runtime}</muleVersion>
-						<applicationName>${project.artifactId}</applicationName>
-						<connectedAppClientId>${env.ANYPOINT_CLIENT_ID}</connectedAppClientId>
-						<connectedAppClientSecret>${env.ANYPOINT_CLIENT_SECRET}</connectedAppClientSecret>
-						<connectedAppGrantType>client_credentials</connectedAppGrantType>
-						<replicas>1</replicas>
-						<vCores>0.1</vCores>
+    					<uri>https://anypoint.mulesoft.com</uri>
+    					<provider>MC</provider>
+    					<environment>${anypoint.environment}</environment>
+    					<target>${anypoint.target}</target>
+   					 <muleVersion>${app.runtime}</muleVersion>
+    					<applicationName>${project.artifactId}</applicationName>
+    					<connectedAppClientId>${anypoint.client_id}</connectedAppClientId>
+    					<connectedAppClientSecret>${anypoint.client_secret}</connectedAppClientSecret>
+    					<connectedAppGrantType>client_credentials</connectedAppGrantType>
+    					<replicas>1</replicas>
+   			 		<vCores>0.1</vCores>
 					</cloudHubV2Deployment>
 				</configuration>
 			</plugin>
