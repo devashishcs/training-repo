@@ -22,7 +22,9 @@ jobs:
         env:
           ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID }}
           ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET }}
-        run: mvn -B -s settings.xml clean package
+        run: |
+          echo "Client ID length: ${#ANYPOINT_CLIENT_ID}"
+	  mvn -B -s settings.xml clean package
 
   deploy:
     needs: build
