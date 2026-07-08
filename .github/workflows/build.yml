@@ -49,7 +49,7 @@ jobs:
           echo "ENV length: ${#ANYPOINT_ENV}"
           echo "TARGET length: ${#ANYPOINT_TARGET}"
           echo "TARGET value: ${ANYPOINT_TARGET}"
-          mvn -B -s settings.xml deploy -DmuleDeploy -DskipTests \
+          mvn -X -B -s settings.xml deploy -DmuleDeploy -DskipTests \
             "-Danypoint.environment=${ANYPOINT_ENV}" \
             "-Danypoint.target=${ANYPOINT_TARGET}" \
             "-Danypoint.client_id=${ANYPOINT_CLIENT_ID}" \
