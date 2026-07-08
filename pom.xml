@@ -17,6 +17,15 @@
 		<mule.maven.plugin.version>4.7.0</mule.maven.plugin.version>
 	</properties>
 
+	<distributionManagement>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Exchange Private Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/f2bff126-3a13-4afe-8b01-a116ee31f2c9/maven</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
