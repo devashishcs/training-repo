@@ -46,6 +46,9 @@ jobs:
           ANYPOINT_ENV: ${{ secrets.ANYPOINT_ENV }}
           ANYPOINT_TARGET: ${{ secrets.ANYPOINT_TARGET }}
         run: |
+          echo "ENV length: ${#ANYPOINT_ENV}"
+          echo "TARGET length: ${#ANYPOINT_TARGET}"
+          echo "TARGET value: ${ANYPOINT_TARGET}"
           mvn -B -s settings.xml deploy -DmuleDeploy -DskipTests \
             "-Danypoint.environment=${ANYPOINT_ENV}" \
             "-Danypoint.target=${ANYPOINT_TARGET}" \
