@@ -15,20 +15,6 @@ pipeline {
             }
         }
 
-        stage('Verify Credentials') {
-            steps {
-                withCredentials([
-                    string(credentialsId: 'anypoint-client-id', variable: 'ANYPOINT_CLIENT_ID'),
-                    string(credentialsId: 'anypoint-client-secret', variable: 'ANYPOINT_CLIENT_SECRET')
-                ]) {
-                    sh '''
-                    echo "Client ID Length: ${#ANYPOINT_CLIENT_ID}"
-                    echo "Client Secret Length: ${#ANYPOINT_CLIENT_SECRET}"
-                    '''
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 withCredentials([
@@ -36,7 +22,9 @@ pipeline {
                     string(credentialsId: 'anypoint-client-secret', variable: 'ANYPOINT_CLIENT_SECRET')
                 ]) {
                     sh '''
-                    mvn -B -s settings.xml clean package
+                    mvn -B -s settings.xml clean package \
+                    -Danypoint.client_id=$ANYPOINT_CLIENT_ID \
+                    -Danypoint.client_secret=$ANYPOINT_CLIENT_SECRET
                     '''
                 }
             }
@@ -49,10 +37,7 @@ pipeline {
                     string(credentialsId: 'anypoint-client-secret', variable: 'ANYPOINT_CLIENT_SECRET')
                 ]) {
                     sh '''
-                    mvn -e -X -B -s settings.xml clean deploy -DskipTests
-
-                    mvn -e -X -B -s settings.xml \
-                    org.mule.tools.maven:mule-maven-plugin:4.7.0:deploy \
+                    mvn -B -s settings.xml clean deploy \
                     -DmuleDeploy \
                     -DskipTests \
                     -Danypoint.environment=Sandbox \

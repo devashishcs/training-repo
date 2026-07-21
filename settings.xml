@@ -1,17 +1,9 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
-
     <servers>
-
         <server>
-
             <id>anypoint-exchange-v3</id>
-
-            <username>${env.ANYPOINT_CLIENT_ID}</username>
-
-            <password>${env.ANYPOINT_CLIENT_SECRET}</password>
-
+            <username>~~~Client~~~</username>
+            <password>${anypoint.client_id}~?~${anypoint.client_secret}</password>
         </server>
-
     </servers>
-
 </settings>
