@@ -7,11 +7,6 @@ pipeline {
         maven 'Maven3'
     }
 
-    environment {
-        ANYPOINT_CLIENT_ID = credentials('anypoint-client-id')
-        ANYPOINT_CLIENT_SECRET = credentials('anypoint-client-secret')
-    }
-
     stages {
 
         stage('Checkout') {
@@ -19,45 +14,68 @@ pipeline {
                 checkout scm
             }
         }
+
         stage('Verify Credentials') {
-    steps {
-        sh '''
-        echo "Client ID Length: ${#ANYPOINT_CLIENT_ID}"
-        echo "Client Secret Length: ${#ANYPOINT_CLIENT_SECRET}"
-        '''
-    }
-}
+            steps {
+                withCredentials([
+                    string(credentialsId: 'anypoint-client-id', variable: 'ANYPOINT_CLIENT_ID'),
+                    string(credentialsId: 'anypoint-client-secret', variable: 'ANYPOINT_CLIENT_SECRET')
+                ]) {
+                    sh '''
+                    echo "Client ID Length: ${#ANYPOINT_CLIENT_ID}"
+                    echo "Client Secret Length: ${#ANYPOINT_CLIENT_SECRET}"
+                    '''
+                }
+            }
+        }
 
         stage('Build') {
             steps {
-                sh '''
-                mvn -s settings.xml clean verify \
-                -Danypoint.client_id=$ANYPOINT_CLIENT_ID \
-                -Danypoint.client_secret=$ANYPOINT_CLIENT_SECRET
-                '''
+                withCredentials([
+                    string(credentialsId: 'anypoint-client-id', variable: 'ANYPOINT_CLIENT_ID'),
+                    string(credentialsId: 'anypoint-client-secret', variable: 'ANYPOINT_CLIENT_SECRET')
+                ]) {
+                    sh '''
+                    mvn -B -s settings.xml clean package
+                    '''
+                }
             }
         }
 
         stage('Deploy') {
-    steps {
-        sh '''
-        mvn -X -e -s settings.xml deploy \
-        -DskipTests \
-        -Danypoint.client_id=$ANYPOINT_CLIENT_ID \
-        -Danypoint.client_secret=$ANYPOINT_CLIENT_SECRET \
-        -Danypoint.environment=Sandbox \
-        -Danypoint.target=Cloudhub-US-East-2
-        '''
-    }
-}
+            steps {
+                withCredentials([
+                    string(credentialsId: 'anypoint-client-id', variable: 'ANYPOINT_CLIENT_ID'),
+                    string(credentialsId: 'anypoint-client-secret', variable: 'ANYPOINT_CLIENT_SECRET')
+                ]) {
+                    sh '''
+                    mvn -e -X -B -s settings.xml clean deploy -DskipTests
+
+                    mvn -e -X -B -s settings.xml \
+                    org.mule.tools.maven:mule-maven-plugin:4.7.0:deploy \
+                    -DmuleDeploy \
+                    -DskipTests \
+                    -Danypoint.environment=Sandbox \
+                    -Danypoint.target=Cloudhub-US-East-2 \
+                    -Danypoint.client_id=$ANYPOINT_CLIENT_ID \
+                    -Danypoint.client_secret=$ANYPOINT_CLIENT_SECRET
+                    '''
+                }
+            }
+        }
     }
 
     post {
         success {
             echo 'Deployment Successful'
         }
+
         failure {
             echo 'Deployment Failed'
+        }
+
+        always {
+            cleanWs()
         }
     }
 }
