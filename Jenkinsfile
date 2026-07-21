@@ -19,6 +19,14 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Verify Credentials') {
+    steps {
+        sh '''
+        echo "Client ID Length: ${#ANYPOINT_CLIENT_ID}"
+        echo "Client Secret Length: ${#ANYPOINT_CLIENT_SECRET}"
+        '''
+    }
+}
 
         stage('Build') {
             steps {
