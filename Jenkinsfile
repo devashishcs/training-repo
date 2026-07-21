@@ -31,17 +31,17 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                sh '''
-                mvn -s settings.xml deploy \
-                -DskipTests \
-                -Danypoint.client_id=$ANYPOINT_CLIENT_ID \
-                -Danypoint.client_secret=$ANYPOINT_CLIENT_SECRET \
-                -Danypoint.environment=Sandbox \
-                -Danypoint.target=Cloudhub-US-East-2
-                '''
-            }
-        }
+    steps {
+        sh '''
+        mvn -X -e -s settings.xml deploy \
+        -DskipTests \
+        -Danypoint.client_id=$ANYPOINT_CLIENT_ID \
+        -Danypoint.client_secret=$ANYPOINT_CLIENT_SECRET \
+        -Danypoint.environment=Sandbox \
+        -Danypoint.target=Cloudhub-US-East-2
+        '''
+    }
+}
     }
 
     post {
