@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="parser-version" content="2.10.0-20251016174856.commit-58fb65c">
+  <meta name="dw-monaco-version" content="3.1.2-20251022122207.commit-b15bc5c">
+  <meta name="dw-monaco-parser-version" content="2.10.0-20251016174856.commit-58fb65c">
+  <meta name="build-timestamp" content="1/30/2026, 9:27:32 AM">
+  <title>DataWeave Interactive Learning Environment | MuleSoft Developers</title>
+  <meta name="description" content="Get started with DataWeave. Learn the basic concepts of the language, common data structures such as arrays, objects & strings via the interactive editor. " />
+  <meta property="og:site_name" content="MuleSoft Developers" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://developer.mulesoft.com/learn/dataweave" />
+  <meta property="og:title" content="DataWeave Interactive Learning Environment" />
+  <meta property="og:image" content="https://www.mulesoft.com/sites/default/files/cmm_files/mulesoft-og_0.jpg" />
+  <meta property="og:image:url" content="https://www.mulesoft.com/sites/default/files/cmm_files/mulesoft-og_0.jpg" />
+  <meta property="og:image:secure_url" content="https://www.mulesoft.com/sites/default/files/cmm_files/mulesoft-og_0.jpg" />
+  <meta property="og:image:type" content="image/jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://www.mulesoft.com/sites/default/files/cmm_files/mulesoft-og_0.jpg" />
+  <link rel="canonical" href="https://developer.mulesoft.com/learn/dataweave" />
+  <link rel="shortcut icon" href="https://www.mulesoft.com/sites/all/themes/muletheme/favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="anypoint-styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@3.4.1/dist/tippy.css">
+  <script src="https://unpkg.com/react@15.6.0/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15.6.0/dist/react-dom.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@3.4.1/dist/tippy.min.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152540530-2"></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    // function gtag(){dataLayer.push(arguments);}
+    // gtag('js', new Date());
+
+    // gtag('config', 'UA-152540530-2');
+  </script>
+</head>
+
+<body class="anypoint-styles" style="margin:0;">
+  <div id="root">
+    <div id="loading" style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);">
+      <h1 style="width: fit-content;font-family: var(--lume-g-font-family-code);">Weaving the interactive tutorial...&nbsp;🐑
+      </h1>
+        <progress
+                style=""
+                id="load-progress"
+                max="125"
+                value="0">
+        </progress>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    // report loading progress since it's a big bundle
+    const req = new XMLHttpRequest();
+    req.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        const loadedBytes = event.loaded;
+        const totalBytes = event.total;
+        const percentComplete = loadedBytes / totalBytes;
+        const progress = percentComplete * 100;
+        document.getElementById("load-progress").value = progress;
+      } else {
+        let total = req.getResponseHeader('content-length')
+        const encoding = req.getResponseHeader('content-encoding')
+        if (total && encoding && (encoding.indexOf('gzip') > -1)) {
+          // assuming average gzip compression ratio to be 25%
+          total *= 4 // original size / compressed size
+          document.getElementById("load-progress").value = Math.min(100, event.loaded / total * 100)
+        } else {
+          // Unable to compute progress information since the total size is unknown
+        }
+      }
+    }, false);
+
+    // load responseText into a new script element
+    req.addEventListener("load", (event) => {
+      const s = document.createElement("script");
+      s.innerHTML = event.target.responseText;
+      document.documentElement.appendChild(s);
+    }, false);
+
+    req.open("GET", "bundle.js", true);
+    req.send();
+  </script>
+<!--  <script src="bundle.js"></script>-->
+</body>
+
+</html>

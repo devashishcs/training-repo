@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:request-config name="HTTP_Request_config" doc:name="HTTP Request config" doc:id="d1ab999d-72b2-45f8-8db1-1ae63eef28f1" />
 	<sub-flow name="get-customers" doc:id="2bc1171a-b7fa-48cf-9191-5fe4b30b31e7" >
 		<ee:transform doc:name="Preapre Request" doc:id="d91f1263-064f-4720-a58c-38261468332b" >
 			<ee:message >
@@ -34,13 +37,13 @@ output application/json
 			</ee:message>
 			<ee:variables >
 				<ee:set-variable variableName="flowName" ><![CDATA["query-flow"]]></ee:set-variable>
-				<ee:set-variable variableName="query" ><![CDATA["SELECT FIELDS(ALL) FROM Account WHERE Id = '" ++ vars.customerId ++ "'"]]></ee:set-variable>
+				<ee:set-variable variableName="query" ><![CDATA["SELECT FIELDS(ALL) FROM Account WHERE Id = '" ++ payload.id ++ "'"]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="salesforce-request-connector-retry-flow " doc:id="2db9bd45-a681-4e15-b6ba-04f3dd555fce" name="salesforce-request-connector-retry-flow"/>
-		<ee:transform doc:name="Submit Response" doc:id="ba7e74ab-f558-4984-8870-bb5ece4bbcf3" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="Submit Response" doc:id="ba7e74ab-f558-4984-8870-bb5ece4bbcf3">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 payload]]></ee:set-payload>

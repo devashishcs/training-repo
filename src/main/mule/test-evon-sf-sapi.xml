@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
     <http:listener-config name="test-evon-sf-sapi-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="${http.port}" />
+        <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
     <apikit:config name="test-evon-sf-sapi-config" api="resource::f2bff126-3a13-4afe-8b01-a116ee31f2c9:test-evon-sf-sapi:1.0.4:raml:zip:test-evon-sf-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="test-evon-sf-sapi-main">
@@ -124,15 +123,10 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow> [STUDIO] -->
-    <flow name="get:\customers:test-evon-sf-sapi-config">
-        <!-- [STUDIO:"Logger"]<logger level="INFO" message="get:\customers:test-evon-sf-sapi-config" /> [STUDIO] -->
-        <flow-ref doc:name="Get Customers" doc:id="6c88cbfa-b700-4eae-a8d1-c74fb62ffc51" name="get-customers" />
-		<!-- [STUDIO:"Insert"]<db:insert doc:id="3c8c9072-aa6f-44ef-a98f-3e06643982db" /> [STUDIO] -->
-    </flow>
     <flow name="post:\customers:application\json:test-evon-sf-sapi-config">
-		<flow-ref doc:name="post-customers" doc:id="5f0024b7-f348-4663-b403-d315978ec860" name="post-customers"/>
+        <flow-ref doc:name="post-customers" doc:id="5f0024b7-f348-4663-b403-d315978ec860" name="post-customers" />
     </flow>
-	<flow name="put:\customers\(customerId):application\json:test-evon-sf-sapi-config">
+    <flow name="put:\customers\(customerId):application\json:test-evon-sf-sapi-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="customerId">attributes.uriParams.'customerId'</ee:set-variable>
@@ -147,5 +141,8 @@ output application/json
             </ee:variables>
         </ee:transform>
         <flow-ref doc:name="get-customers-by-id" doc:id="3ffd8a5f-e25d-4975-9a08-4687a5f751d4" name="get-customers-by-id" />
+    </flow>
+    <flow name="get:\customers:test-evon-sf-sapi-config">
+        <flow-ref doc:name="Get Customers" doc:id="6c88cbfa-b700-4eae-a8d1-c74fb62ffc51" name="get-customers" />
     </flow>
 </mule>
