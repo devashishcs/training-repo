@@ -132,7 +132,7 @@ output application/json
                 <ee:set-variable variableName="customerId">attributes.uriParams.'customerId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <logger level="INFO" message="Put Customers" />
+        <logger level="INFO" message="Put Customers-Check" />
     </flow>
     <flow name="get:\customers\(customerId):test-evon-sf-sapi-config">
         <ee:transform doc:name="Transform Message">
