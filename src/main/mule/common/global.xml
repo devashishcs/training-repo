@@ -5,4 +5,5 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
 	<api-gateway:autodiscovery apiId="21041588" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="65a3e3b6-76a6-41c7-a83d-c4b33ed53085" flowRef="test-evon-sf-sapi-main" />
+	<configuration-properties doc:name="Configuration properties" doc:id="22864203-79c9-4ed9-8fc2-7b84e8f54459" file="configs/common-properties.yaml" />
 </mule>
